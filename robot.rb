@@ -10,29 +10,27 @@ class Robot
     @direction = ""
   end
 
-  def move(direction)
-    if direction == "east"
+  def move
+    if @direction == "east"
       @moving = 1
       approve_horizontal
-      report(@horizontal, @vertical, @direction)
-    elsif direction == "west"
+      report
+    elsif @direction == "west"
       @moving = -1
       approve_horizontal
-      report(@horizontal, @vertical, @direction)
-    elsif direction == "north"
+      report
+    elsif @direction == "north"
       @moving = 1
       approve_vertical
-      report(@horizontal, @vertical, @direction)
-    elsif direction == "south"
+      report
+    elsif @direction == "south"
       @moving = -1
       approve_vertical
-      report(@horizontal, @vertical, @direction)
+      report
     else
       puts "Your robot isn't facing a valid direction. Place your robot and set a direction."
     end
   end
-
-  private
 
   def approve_horizontal
     if (@horizontal + @moving) > 4 || (@horizontal + @moving) < 0
@@ -54,14 +52,19 @@ class Robot
     puts "Ba-Bow...You can't move beyond the edge, you are trying to move too far."
   end
 
-  def report(horizontal, vertical, direction)
-   puts "You are located at horizontal #{horizontal} and vertical #{vertical} facing #{direction}."
+  def report
+   "You are located at horizontal #{@horizontal} and vertical #{@vertical} facing #{@direction}."
   end
-
 end
 
-# TESTING
+# Testing program
+  # @robot = Robot.new
+  # puts @robot.vertical
+  # puts @robot.move
+  # puts @robot.direction
 
+
+# RSPEC TESTING
 describe Robot do
   before(:each) do
     @robot = Robot.new
@@ -77,9 +80,30 @@ describe Robot do
     expect(@robot.direction).to eq("")
   end
 
-  it "moves robot one spot in location it's facing" do
-    @robot.direction = "north"
-    @robot.move(@robot.direction)
-    expect(@robot.vertical).to eq (1)
+  context "Robot is on the board" do
+    before(:each) do
+      @robot.horizontal = 2
+      @robot.vertical = 1
+      @robot.direction = "north"
+    end
+    it "moves robot one spot in location it's facing" do
+      @robot.move
+      expect(@robot.vertical).to eq (2)
+    end
+    it "will report the location when asked" do
+      @robot.report.should eq("You are located at horizontal 2 and vertical 1 facing north.")
+    end
+  end
+
+  context "Robot is out of bounds" do
+    before(:each) do
+      @robot.horizontal = 4
+      @robot.vertical = 4
+      @robot.direction = "east"
+    end
+    it "won't move robot if it will go beyond the board" do
+      expect(@robot.vertical).to be < 5
+      expect(@robot.horizontal).to be <5
+    end
   end
 end
