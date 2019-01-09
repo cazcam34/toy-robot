@@ -1,4 +1,6 @@
 require 'rspec/autorun'
+require 'pry-byebug'
+require 'pry'
 
 # PROGRAM
 
@@ -13,73 +15,83 @@ class Robot
 
   def place(x, y, dir)
     # setting the validated move variables
-    @move_horizontal = @arr[0].to_i
-    @move_vertical = @arr[1].to_i
-    @move_direction = @arr[2].downcase
+    @move_horizontal = x
+    @move_vertical = y
+    @move_direction = dir
     # approving the variables to stay on the board
     approve_place
     @placed = true
+    return
   end
 
   def approve_place
     if (@move_horizontal > 4 && @move_vertical > 4) || @move_horizontal > 4 || @move_vertical > 4
       return "Ba-Bow...You can't move beyond the edge, you are trying to move too far."
     else
-      @robot.horizontal = @move_horizontal
-      @robot.vertical = @move_vertical
-      @robot.direction = @move_direction
+      @horizontal = @move_horizontal
+      @vertical = @move_vertical
+      @direction = @move_direction
     end
   end
 
-  def on_table?
-    @placed
-  end
-
   def move
-    if @placed
-      if @direction == "east"
+    if @placed == false
+      return "You must first place your robot on the board!"
+    end
+    if @direction == "east"
       @moving = 1
       approve_horizontal
-      elsif @direction == "west"
-        @moving = -1
-        approve_horizontal
-      elsif @direction == "north"
-        @moving = 1
-        approve_vertical
-      elsif @direction == "south"
-        @moving = -1
-        approve_vertical
-      else
-        return "Your robot isn't facing a valid direction. Place your robot and set a direction."
-      end
+    elsif @direction == "west"
+      @moving = -1
+      approve_horizontal
+    elsif @direction == "north"
+      @moving = 1
+      approve_vertical
+    elsif @direction == "south"
+      @moving = -1
+      approve_vertical
     else
-      return "You must first place your robot on the board!"
+      return "Your robot isn't facing a valid direction. Place your robot and set a direction."
     end
   end
 
   def left
-    if @robot.direction == "north"
-      @robot.direction = "west"
-    elsif @robot.direction == "east"
-      @robot.direction = "north"
-    elsif @robot.direction == "south"
-      @robot.direction = "east"
-    elsif @robot.direction == "west"
-      @robot.direction = "south"
+    if @placed == false
+      return "You must first place your robot on the board!"
+    end
+    if @direction == "north"
+      @direction = "west"
+      return
+    elsif @direction == "east"
+      @direction = "north"
+      return
+    elsif @direction == "south"
+      @direction = "east"
+      return
+    elsif @direction == "west"
+      @direction = "south"
+      return
     else
       return "Your robot isn't facing a valid direction. Place your robot and set a direction."
     end
   end
 
   def right
-    if @robot.direction == "north"
-      @robot.direction = "east"
-    elsif @robot.direction == "east"
-      @robot.direction = "south"
-    elsif @robot.direction == "south"
-      @robot.direction = "west"
-    elsif @robot.direction == "west"
-      @robot.direction = "north"
+    if @placed == false
+      return "You must first place your robot on the board!"
+    end
+    if @direction == "north"
+      @direction = "east"
+      return
+    elsif @direction == "east"
+      @direction = "south"
+      return
+    elsif @direction == "south"
+      @direction = "west"
+      return
+    elsif @direction == "west"
+      @direction = "north"
+      return
     else
       return "Your robot isn't facing a valid direction. Place your robot and set a direction."
     end
@@ -90,6 +102,7 @@ class Robot
       return "Ba-Bow...You can't move beyond the edge, you are trying to move too far."
     else
       @horizontal += @moving
+      return
     end
   end
 
@@ -98,11 +111,16 @@ class Robot
       return "Ba-Bow...You can't move beyond the edge, you are trying to move too far."
     else
       @vertical += @moving
+      return
     end
   end
 
   def report
-    return "You are located at horizontal #{@horizontal} and vertical #{@vertical} facing #{@direction}."
+    if @placed == false
+      return "You must first place your robot on the board!"
+    else
+      return "You are located at horizontal #{@horizontal} and vertical #{@vertical} facing #{@direction}."
+    end
   end
 
 end

@@ -99,24 +99,6 @@ class RobotController
 
   private
 
-  def approve_place
-    if @move_horizontal > 4 && @move_vertical > 4
-      @view.try_again
-      place()
-    elsif @move_horizontal > 4
-      @view.try_again
-      place()
-    elsif @move_vertical > 4
-      @view.try_again
-      place()
-    else
-      @robot.horizontal = @move_horizontal
-      @robot.vertical = @move_vertical
-      @robot.direction = @move_direction
-      report
-    end
-  end
-
   def approve_horizontal
     if (@robot.horizontal + @moving) > 4 || (@robot.horizontal + @moving) < 0
       @view.try_again
