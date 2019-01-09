@@ -8,33 +8,86 @@ class Robot
     @horizontal = 0
     @vertical = 0
     @direction = ""
+    @placed = false
+  end
+
+  def place(x, y, dir)
+    # setting the validated move variables
+    @move_horizontal = @arr[0].to_i
+    @move_vertical = @arr[1].to_i
+    @move_direction = @arr[2].downcase
+    # approving the variables to stay on the board
+    approve_place
+    @placed = true
+  end
+
+  def approve_place
+    if (@move_horizontal > 4 && @move_vertical > 4) || @move_horizontal > 4 || @move_vertical > 4
+      return "Ba-Bow...You can't move beyond the edge, you are trying to move too far."
+    else
+      @robot.horizontal = @move_horizontal
+      @robot.vertical = @move_vertical
+      @robot.direction = @move_direction
+    end
+  end
+
+  def on_table?
+    @placed
   end
 
   def move
-    if @direction == "east"
+    if @placed
+      if @direction == "east"
       @moving = 1
       approve_horizontal
-      report
-    elsif @direction == "west"
-      @moving = -1
-      approve_horizontal
-      report
-    elsif @direction == "north"
-      @moving = 1
-      approve_vertical
-      report
-    elsif @direction == "south"
-      @moving = -1
-      approve_vertical
-      report
+      elsif @direction == "west"
+        @moving = -1
+        approve_horizontal
+      elsif @direction == "north"
+        @moving = 1
+        approve_vertical
+      elsif @direction == "south"
+        @moving = -1
+        approve_vertical
+      else
+        return "Your robot isn't facing a valid direction. Place your robot and set a direction."
+      end
     else
-      puts "Your robot isn't facing a valid direction. Place your robot and set a direction."
+      return "You must first place your robot on the board!"
+    end
+  end
+
+  def left
+    if @robot.direction == "north"
+      @robot.direction = "west"
+    elsif @robot.direction == "east"
+      @robot.direction = "north"
+    elsif @robot.direction == "south"
+      @robot.direction = "east"
+    elsif @robot.direction == "west"
+      @robot.direction = "south"
+    else
+      return "Your robot isn't facing a valid direction. Place your robot and set a direction."
+    end
+  end
+
+  def right
+    if @robot.direction == "north"
+      @robot.direction = "east"
+    elsif @robot.direction == "east"
+      @robot.direction = "south"
+    elsif @robot.direction == "south"
+      @robot.direction = "west"
+    elsif @robot.direction == "west"
+      @robot.direction = "north"
+    else
+      return "Your robot isn't facing a valid direction. Place your robot and set a direction."
     end
   end
 
   def approve_horizontal
     if (@horizontal + @moving) > 4 || (@horizontal + @moving) < 0
-      try_again
+      return "Ba-Bow...You can't move beyond the edge, you are trying to move too far."
     else
       @horizontal += @moving
     end
@@ -42,19 +95,16 @@ class Robot
 
   def approve_vertical
     if (@vertical + @moving) > 4 || (@vertical + @moving) < 0
-      try_again
+      return "Ba-Bow...You can't move beyond the edge, you are trying to move too far."
     else
       @vertical += @moving
     end
   end
 
-  def try_again
-    puts "Ba-Bow...You can't move beyond the edge, you are trying to move too far."
+  def report
+    return "You are located at horizontal #{@horizontal} and vertical #{@vertical} facing #{@direction}."
   end
 
-  def report
-   "You are located at horizontal #{@horizontal} and vertical #{@vertical} facing #{@direction}."
-  end
 end
 
 # Testing program
@@ -74,6 +124,10 @@ describe Robot do
     expect(@robot).to be_a(Robot)
   end
 
+  it "robot has to be placed on the table before any other commands" do
+    expect(@robot.place).to eq false
+  end
+
   it "initializes robot at the origin (0,0) with no direction" do
     expect(@robot.horizontal).to eq(0)
     expect(@robot.vertical).to eq(0)
@@ -91,7 +145,7 @@ describe Robot do
       expect(@robot.vertical).to eq (2)
     end
     it "will report the location when asked" do
-      @robot.report.should eq("You are located at horizontal 2 and vertical 1 facing north.")
+      expect(@robot.report).to start_with ("You are located")
     end
   end
 

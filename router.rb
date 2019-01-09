@@ -1,51 +1,47 @@
 # gets the input and sends to the controller
+# change name to play? or run?
 class Router
-  def initialize(controller)
-    @controller = controller
-    @running = true
+  def initialize(robot)
+    @robot = robot
   end
 
-  def run
-    puts "Welcome to the Toy Robot!"
-    puts "Place your robot to start, select PLACE X, Y, F"
-    @controller.place
-    puts "Yay! You have started!"
-    while @running
-      start_menu
-      action = gets.chomp.downcase
-      print `clear`
-      route_action(action)
+  def route_action(user_input)
+    if user_input.start_with?("place")
+      action = "place"
     end
-  end
-
-  private
-
-  def start_menu
-    puts ""
-    puts "What do you want to do?"
-    puts "PLACE"
-    puts "MOVE"
-    puts "LEFT"
-    puts "RIGHT"
-    puts "REPORT"
-    puts "STOP"
-  end
-
-  end
-
-  def route_action(action)
     case action
-    when "place" then @controller.place
-    when "move" then @controller.move
-    when "left" then @controller.left
-    when "right" then @controller.right
-    when "report" then @controller.report
-    when "stop" then stop
+    when "place" then
+      #extract place arguments to answer
+      answer = user_input.gsub("place", "")
+      arr = answer.split(',').map { |item| item.strip }
+      validate_place_input(arr)
+      #extract x y dir from answer
+      x = arr[0]
+      y = arr[1]
+      dir = arr[2]
+      @robot.place(x, y, dir)
+    when "move" then @robot.move
+    when "left" then @robot.left
+    when "right" then @robot.right
+    when "report" then @robot.report
+    when "stop" then return "stop"
     else
       puts "Please choose an option on the menu"
   end
 
-  def stop
-    @running = false
+  def get_place_input
+    @answer = gets.chomp
+
+  end
+
+  def validate_place_input(arr)
+        # validation of input (numbers only)
+    while (@arr[0].to_i.zero? && (@arr[0] != '0')) || (@arr[1].to_i.zero? && (@arr[1] != '0'))
+      return 'Please select numbers to move horizontally and vertically. Try again.'
+    end
+    # validation of input (direction)
+    until ['north', 'south', 'east', 'west'].include? @arr[2].downcase
+      return 'Please select a valid direction (North, South, East or West). Try again.'
+    end
   end
 end
