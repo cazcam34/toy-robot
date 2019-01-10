@@ -14,10 +14,14 @@ describe Router do
   end
 
   it "will only accept numbers for the x and y positions" do
-    expect(@router.route_action("place 1, a, west")).to start_with("Please select numbers")
+    expect(@router.route_action("place 1, a, west")).to start_with("Please re-enter your place")
   end
 
   it "will only accept 'north', 'south', 'east', and 'west' directions" do
     expect(@router.route_action("place 1, 3, oops")).to start_with("Please select a valid direction")
+  end
+
+  it "will only accept valid place data 'place x, y, direction'" do
+    expect(@router.route_action("place thisis terrible daaaaata")).to start_with("Please re-enter your place")
   end
 end

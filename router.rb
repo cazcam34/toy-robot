@@ -16,13 +16,14 @@ class Router
     user_input.start_with?("place") ? (action = "place") : (action = user_input)
     case action
     when "place" then
-    #extract user data to know where to place robot
-      answer = user_input.gsub("place", "")
-      arr = answer.split(',').map { |item| item.strip }
-    #validate the data entered
-    # make sure user enters numbers ONLY for x & y placement
-      unless arr[0].match(/\d/) && arr[1].match(/\d/)
-        return 'Please select numbers to move horizontally and vertically. Try again.'
+    # extract user data to know where to place robot
+      answer = user_input.gsub("place ", "").gsub(",", " ")
+    # make sure data is entered correctly and that the x & y inputs are numbers
+      if answer.match(/\d+\W+\d+\W+\w+/)
+    # turn user input to an array of three variables
+        arr = answer.split(' ').map { |item| item.strip }
+      else
+        return "Please re-enter your place data as 'PLACE X,Y,DIRECTION'. X & Y must be number co-ordinates."
       end
     # make sure user enters valid direction
       unless ['north', 'south', 'east', 'west'].include? arr[2].downcase
