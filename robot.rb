@@ -119,7 +119,7 @@ class Robot
     if @placed == false
       return @not_placed_error
     else
-      return "You are located at horizontal #{@horizontal} and vertical #{@vertical} facing #{@direction}."
+      return "You are located at X: #{@horizontal} and Y: #{@vertical} facing #{@direction}."
     end
   end
 end
