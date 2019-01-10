@@ -47,7 +47,7 @@ describe Robot do
 
   it "report will announce the location of the robot" do
     @robot.place(0,4,"west")
-    expect(@robot.report).to eq("You are located at horizontal 0 and vertical 4 facing west.")
+    expect(@robot.report).to eq("You are located at X: 0 and Y: 4 facing west.")
   end
 
   it "robot won't be placed beyond the board" do
@@ -64,13 +64,13 @@ describe Robot do
   it "Example a" do
     @robot.place(0,0,"north")
     @robot.move
-    expect(@robot.report).to eq("You are located at horizontal 0 and vertical 1 facing north.")
+    expect(@robot.report).to eq("You are located at X: 0 and Y: 1 facing north.")
   end
 
   it "Example b" do
     @robot.place(0,0,"north")
     @robot.left
-    expect(@robot.report).to eq("You are located at horizontal 0 and vertical 0 facing west.")
+    expect(@robot.report).to eq("You are located at X: 0 and Y: 0 facing west.")
   end
 
   it "Example c" do
@@ -79,6 +79,6 @@ describe Robot do
     @robot.move
     @robot.left
     @robot.move
-    expect(@robot.report).to eq("You are located at horizontal 3 and vertical 3 facing north.")
+    expect(@robot.report).to eq("You are located at X: 3 and Y: 3 facing north.")
   end
 end
