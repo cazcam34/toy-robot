@@ -1,14 +1,18 @@
 # Toy Robot Simulator
 
-REA coding challenge for the 2019 Springboard program. The challenge was to develop a program that moved a robot on a 5x5 tabletop. All requirements and constraints are found in the 'PROBLEM.md' file.
+## Description
+
+REA coding challenge for the 2019 Springboard program. This challenge required the development of an app that moved a robot on a 5x5 tabletop. All requirements and constraints are found in the 'PROBLEM.md' file.
 
 ## Technologies
 
-Ruby
-RSpec
+Ruby 2.4.4
+RSpec Core 3.8
 
 ## Setup
-- Make sure Ruby is installed on your machine.
+- Make sure Ruby and RSpec are installed on machine. Links below:
+    Ruby: https://www.ruby-lang.org/en/documentation/installation/
+    RSpec: https://github.com/rspec/rspec
 - Unpack the 'toy-robot' directory
 - Change to the app directory *cd toy-robot*
 

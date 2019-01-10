@@ -49,6 +49,17 @@ describe Robot do
     @robot.place(0,4,"west")
     expect(@robot.report).to eq("You are located at horizontal 0 and vertical 4 facing west.")
   end
+
+  it "robot won't be placed beyond the board" do
+    @robot.place(8,8,"north")
+    expect(@robot.placed).to eq(false)
+  end
+
+  it "robot won't be moved beyond the board" do
+    @robot.place(0,4,"west")
+    expect(@robot.move).to start_with("Ba-Bow...You")
+  end
+
 # test cases using example data from problem
   it "Example a" do
     @robot.place(0,0,"north")

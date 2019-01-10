@@ -10,35 +10,29 @@ class Robot
     @vertical = 0
     @direction = ""
     @placed = false
+    @not_placed_error = "You must first place your robot on the board!"
+    @off_board_error = "Ba-Bow...You can't move beyond the edge, you are trying to move too far."
+    @no_direction_error = "Error: Your robot doesn't have a valid direction. Please place your robot again."
   end
 
 # place the robot on the table using the validated user input
   def place(x, y, dir)
-    # setting the validated move variables
-    @move_horizontal = x
-    @move_vertical = y
-    @move_direction = dir
-    # approving the variables to make sure robot stays on the board
-    approve_place
-    @placed = true
-    return
-  end
-
-# method to check that the placed robot will stay on the board
-  def approve_place
-    if (@move_horizontal > 4 && @move_vertical > 4) || @move_horizontal > 4 || @move_vertical > 4
-      return "Ba-Bow...You can't move beyond the edge, you are trying to move too far."
+  # approving the variables to make sure robot stays on the board
+    if (x > 4 && y > 4) || x > 4 || y > 4
+      return @off_board_error
     else
-      @horizontal = @move_horizontal
-      @vertical = @move_vertical
-      @direction = @move_direction
+      @horizontal = x
+      @vertical = y
+      @direction = dir
+      @placed = true
     end
+    return
   end
 
 # moving the robot one unit in the direction it faces
   def move
   # check that the robot is placed before executing move method
-    return "You must first place your robot on the board!" if @placed == false
+    return @not_placed_error if @placed == false
   #executing move method using the robots direction
     if @direction == "east"
       @moving = 1
@@ -53,13 +47,13 @@ class Robot
       @moving = -1
       approve_vertical
     else
-      return "Your robot isn't facing a valid direction. Place your robot and set a direction."
+      return @no_direction_error
     end
   end
 
   def left
   # check that the robot is placed before executing move method
-    return "You must first place your robot on the board!" if @placed == false
+    return @not_placed_error if @placed == false
   #executing left method using the robots direction
     if @direction == "north"
       @direction = "west"
@@ -74,13 +68,13 @@ class Robot
       @direction = "south"
       return
     else
-      return "Your robot isn't facing a valid direction. Place your robot and set a direction."
+      return @no_direction_error
     end
   end
 
   def right
   # check that the robot is placed before executing move method
-    return "You must first place your robot on the board!" if @placed == false
+    return @not_placed_error if @placed == false
   #executing right method using the robots direction
     if @direction == "north"
       @direction = "east"
@@ -95,14 +89,14 @@ class Robot
       @direction = "north"
       return
     else
-      return "Your robot isn't facing a valid direction. Place your robot and set a direction."
+      return @no_direction_error
     end
   end
 
 # check that the move method doesn't push the robot off the board horizontally
   def approve_horizontal
     if (@horizontal + @moving) > 4 || (@horizontal + @moving) < 0
-      return "Ba-Bow...You can't move beyond the edge, you are trying to move too far."
+      return @off_board_error
     else
       @horizontal += @moving
       return
@@ -112,7 +106,7 @@ class Robot
 # check that the move method doesn't push the robot off the board vertically
   def approve_vertical
     if (@vertical + @moving) > 4 || (@vertical + @moving) < 0
-      return "Ba-Bow...You can't move beyond the edge, you are trying to move too far."
+      return @off_board_error
     else
       @vertical += @moving
       return
@@ -123,7 +117,7 @@ class Robot
   def report
   # check robot is placed prior to executing
     if @placed == false
-      return "You must first place your robot on the board!"
+      return @not_placed_error
     else
       return "You are located at horizontal #{@horizontal} and vertical #{@vertical} facing #{@direction}."
     end

@@ -12,6 +12,7 @@ class Router
 
   def route_action(user_input)
     # extract place keyword from input
+    user_input = user_input.downcase
     user_input.start_with?("place") ? (action = "place") : (action = user_input)
     case action
     when "place" then

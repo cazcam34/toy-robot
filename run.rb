@@ -15,8 +15,8 @@ def start_menu
   puts "STOP"
 end
 
-@robot = Robot.new
-@router = Router.new(@robot)
+robot = Robot.new
+router = Router.new(robot)
 running = true
 
 puts "Welcome to the Toy Robot!"
@@ -25,9 +25,9 @@ puts ""
 while running
   start_menu
   print ">> "
-  user_input = gets.chomp.downcase
+  user_input = gets.chomp
 # pass user input to router for data validation and method calling
-  message = @router.route_action(user_input)
+  message = router.route_action(user_input)
 # stop running the loop and end the program with stop input
   if message == "stop"
     running = false
